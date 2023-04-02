@@ -4,14 +4,9 @@
   "description": "Material Design Icons for Visual Studio Code",
   "version": "4.25.0",
   "scripts": {
-    "build": "npm run compile:dev && npm run generateJson",
+    "build": "node ./build/esbuild.mjs",
+    "postbuild": "npm run generateJson",
     "check": "ts-node ./src/scripts/icons/checks",
-    "compile": "webpack --config ./build/webpack.config.js --mode production",
-    "compile:dev": "webpack --config ./build/webpack.config.js --mode none",
-    "compile:watch": "webpack --config ./build/webpack.config.js --mode none --watch",
-    "compile-web": "webpack --config ./build/web-extension.webpack.config.js",
-    "watch-web": "webpack --watch --config ./build/web-extension.webpack.config.js",
-    "package-web": "webpack --mode production --devtool hidden-source-map --config ./build/web-extension.webpack.config.js",
     "contributors": "ts-node ./src/scripts/contributors/index.ts",
     "generateJson": "ts-node ./src/scripts/icons/generateJson.ts",
     "lint": "eslint -c .eslintrc.json --ext .ts ./src/**/*.ts",
@@ -23,7 +18,7 @@
     "changelog": "changelog-machine --config changelog.config.json",
     "preversion": "npm run contributors && git add images/contributors.png && npm run preview && git add images/fileIcons.png && git add images/folderIcons.png",
     "version": "npm run changelog && git add CHANGELOG.md",
-    "vscode:prepublish": "npm run lint && npm run compile && npm run package-web"
+    "vscode:prepublish": "npm run lint && npm run build --prod && npm run buid --web"
   },
   "publisher": "PKief",
   "author": {
@@ -233,10 +228,12 @@
     "@typescript-eslint/eslint-plugin": "^5.57.0",
     "@typescript-eslint/parser": "^5.57.0",
     "changelog-machine": "^1.0.2",
+    "esbuild": "^0.17.15",
     "eslint": "^8.37.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
     "glob": "^9.3.4",
+    "minimist": "^1.2.8",
     "mocha": "^10.2.0",
     "prettier": "^2.8.7",
     "puppeteer": "^19.8.2",
@@ -245,8 +242,6 @@
     "ts-loader": "^9.4.2",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.3",
-    "vscode-test": "^1.6.1",
-    "webpack": "^5.77.0",
-    "webpack-cli": "^5.0.1"
+    "vscode-test": "^1.6.1"
   }
 }

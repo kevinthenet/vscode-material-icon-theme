@@ -31,7 +31,8 @@ const loadTranslation = async (language: string) => {
 
 /** Get the translation object of the separated translation files */
 const getTranslationObject = async (language: string): Promise<Translation> => {
-  const lang = await import(/* webpackMode: "eager" */ `./lang-${language}`);
+  const lang = await Promise.resolve(require(`./lang-${language}`));
+  // const lang = await import(/* webpackMode: "eager" */ `./lang-${language}`);
   return lang.translation as Translation;
 };
 
